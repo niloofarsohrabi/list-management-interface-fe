@@ -1,19 +1,18 @@
+import React from 'react';
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-import type { ActionButton } from '../../types/types';
 
-import './CommonDialog.css';
+import styles from './CommonDialog.module.css';
 
 interface CommonDialogProps {
   open: boolean;
   title: string;
   content: React.ReactNode;
-  actions?: ActionButton[];
+  actions: React.ReactNode;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   onClose: () => void;
 }
@@ -29,25 +28,10 @@ const CommonDialog: React.FC<CommonDialogProps> = ({
   return (
     <Dialog open={open} maxWidth={maxWidth} onClose={onClose}>
       <DialogTitle>{title}</DialogTitle>
+      <div className={styles.divider} />
       <DialogContent>{content}</DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        {actions && actions.length > 0 && (
-          <DialogActions>
-            {actions.map((action, idx) => (
-              <Button
-                key={idx}
-                onClick={action.onClick}
-                color={action.color || 'primary'}
-                variant={action.variant || 'text'}
-                disabled={action.disabled}
-              >
-                {action.label}
-              </Button>
-            ))}
-          </DialogActions>
-        )}
-      </DialogActions>
+      <div className={styles.divider} />
+      <DialogActions className={styles.dialogActions}>{actions}</DialogActions>
     </Dialog>
   );
 };

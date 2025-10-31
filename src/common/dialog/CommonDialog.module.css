@@ -1,0 +1,10 @@
+.divider {
+  height: 1px;
+  background-color: #e0e0e0;
+}
+
+.dialogActions {
+  padding: 8px 0;
+  justify-content: flex-end;
+  gap: 8px;
+}

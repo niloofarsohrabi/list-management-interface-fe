@@ -1,0 +1,23 @@
+.actionsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.closeButton {
+  background: #737373 !important;
+  font-size: 12px !important;
+}
+
+.actionButton {
+  font-size: 12px !important;
+}
+
+.dialogContent {
+  width: 400px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 8px;
+}
