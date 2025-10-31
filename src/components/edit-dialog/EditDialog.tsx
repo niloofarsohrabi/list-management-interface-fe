@@ -19,8 +19,9 @@ const EditDialog: React.FC<EditDialogProps> = ({
   onClose,
   onSave,
 }) => {
-  const [title, setTitle] = useState('');
-  const [subtitle, setSubtitle] = useState('');
+  const [title, setTitle] = useState<string>('');
+  const [subtitle, setSubtitle] = useState<string>('');
+  const [showErrors, setShowErrors] = useState<boolean>(false);
 
   const initialTitle = item?.title ?? '';
   const initialSubtitle = item?.subtitle ?? '';
@@ -32,9 +33,17 @@ const EditDialog: React.FC<EditDialogProps> = ({
     subtitle.trim().length > 0 &&
     !isNumericOnly(title) &&
     !isNumericOnly(subtitle) &&
-    (mode === 'add' ||
+    (mode === 'edit' ||
       title.trim() !== initialTitle.trim() ||
       subtitle.trim() !== initialSubtitle.trim());
+
+  const onSaveChanges = () => {
+    if (!isFormValid) {
+      setShowErrors(true);
+      return;
+    }
+    onSave(title.trim(), subtitle.trim());
+  };
 
   useEffect(() => {
     if (mode === 'edit' && item) {
@@ -44,6 +53,7 @@ const EditDialog: React.FC<EditDialogProps> = ({
       setTitle('');
       setSubtitle('');
     }
+    setShowErrors(false);
   }, [mode, item, open]);
 
   return (
@@ -64,11 +74,10 @@ const EditDialog: React.FC<EditDialogProps> = ({
           </Button>
           <Button
             className={styles.actionButton}
-            onClick={() => onSave(title.trim(), subtitle.trim())}
+            onClick={onSaveChanges}
             variant="contained"
             color="primary"
             size="small"
-            disabled={!isFormValid}
           >
             {mode === 'add' ? 'Create' : 'Submit'}
           </Button>
@@ -83,13 +92,15 @@ const EditDialog: React.FC<EditDialogProps> = ({
             label="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            error={!title.trim() || isNumericOnly(title)}
+            error={showErrors && (!title.trim() || isNumericOnly(title))}
             helperText={
-              !title.trim()
-                ? 'Title cannot be empty'
-                : isNumericOnly(title)
-                  ? 'Title cannot be only numbers'
-                  : ''
+              showErrors
+                ? !title.trim()
+                  ? 'Title cannot be empty'
+                  : isNumericOnly(title)
+                    ? 'Title cannot be only numbers'
+                    : ''
+                : ''
             }
           />
           <TextField
@@ -99,13 +110,15 @@ const EditDialog: React.FC<EditDialogProps> = ({
             label="Subtitle"
             value={subtitle}
             onChange={(e) => setSubtitle(e.target.value)}
-            error={!subtitle.trim() || isNumericOnly(subtitle)}
+            error={showErrors && (!subtitle.trim() || isNumericOnly(subtitle))}
             helperText={
-              !subtitle.trim()
-                ? 'Subtitle cannot be empty'
-                : isNumericOnly(subtitle)
-                  ? 'Subtitle cannot be only numbers'
-                  : ''
+              showErrors
+                ? !subtitle.trim()
+                  ? 'Subtitle cannot be empty'
+                  : isNumericOnly(subtitle)
+                    ? 'Subtitle cannot be only numbers'
+                    : ''
+                : ''
             }
           />
         </DialogContent>

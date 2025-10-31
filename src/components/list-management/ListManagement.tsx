@@ -61,7 +61,7 @@ const ListManagement: React.FC = () => {
   };
 
   useEffect(() => {
-    setListItems(generateList(2));
+    setListItems(generateList(10));
   }, []);
 
   return (

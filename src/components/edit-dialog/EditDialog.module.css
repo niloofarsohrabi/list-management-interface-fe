@@ -15,7 +15,7 @@
 
 .dialogContent {
   width: 400px;
-  height: 180px;
+  height: 160px;
   display: flex;
   flex-direction: column;
   gap: 25px;
